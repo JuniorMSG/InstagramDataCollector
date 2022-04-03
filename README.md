@@ -8,3 +8,5 @@
 conda create -n dataColc python=3.6
 pip install chromedriver_autoinstaller
 pip install selenium
+pip install requests
+pip intsall pandas

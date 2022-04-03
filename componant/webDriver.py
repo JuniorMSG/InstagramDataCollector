@@ -1,7 +1,8 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import chromedriver_autoinstaller
-from selenium import webdriver
+# from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,6 +13,7 @@ import uuid
 import random
 import re
 import time
+from bs4 import BeautifulSoup
 
 def web_driver_wait(driver, path, time=20):
     return WebDriverWait(driver, time).until(EC.presence_of_element_located((By.XPATH, path)))
@@ -79,8 +81,20 @@ def get_driver(headress_mode, proxy_ip, mobile_mode=False):
     # 로그인시 비밀번호창 비활성
     prefs = {
         "credentials_enable_service": False,
-        "profile.password_manager_enabled": False
+        "profile.password_manager_enabled": False,
+        'profile.default_content_setting_values': {'cookies': 1, 'images': 2, 'plugins': 2, 'popups': 2,
+                                                            'geolocation': 2, 'notifications': 2,
+                                                            'auto_select_certificate': 2, 'fullscreen': 2,
+                                                            'mouselock': 2, 'mixed_script': 2, 'media_stream': 2,
+                                                            'media_stream_mic': 2, 'media_stream_camera': 2,
+                                                            'protocol_handlers': 2, 'ppapi_broker': 2,
+                                                            'automatic_downloads': 2, 'midi_sysex': 2,
+                                                            'push_messaging': 2, 'ssl_cert_decisions': 2,
+                                                            'metro_switch_to_desktop': 2,
+                                                            'protected_media_identifier': 2, 'app_banner': 2,
+                                                            'site_engagement': 2, 'durable_storage': 2}
     }
+
     options.add_experimental_option("prefs", prefs)
     chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]
 
@@ -98,7 +112,7 @@ def get_driver(headress_mode, proxy_ip, mobile_mode=False):
         chromedriver_autoinstaller.install(path='./rsc')
         driver = webdriver.Chrome(f'./rsc/{chrome_ver}/chromedriver.exe', options=options)
 
-    driver.set_page_load_timeout(30)
+    driver.set_page_load_timeout(120)
     driver.create_options()
     # driver.maximize_window()
 
@@ -149,5 +163,10 @@ def popup_close(driver):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-    driver1 = browser_open('', 'https://search.naver.com/search.naver?where=nexearch&sm=top_sug.mbk&fbm=1&acr=1&acq=rhddls+%E3%85%91%E3%85%96&qdt=0&ie=utf8&query=%EA%B3%B5%EC%9D%B8ip',
+    driver = browser_open('', 'https://search.naver.com/search.naver?where=nexearch&sm=top_sug.mbk&fbm=1&acr=1&acq=rhddls+%E3%85%91%E3%85%96&qdt=0&ie=utf8&query=%EA%B3%B5%EC%9D%B8ip',
                            headress_mode=False, proxy_ip="", mobile_mode=False)
+
+
+
+
+    print(1234)
