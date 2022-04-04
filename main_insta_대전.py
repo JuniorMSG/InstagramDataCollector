@@ -32,11 +32,21 @@ def set_scrolling(driver):
        status = 0
        last_height = driver.execute_script("return document.body.scrollHeight")
 
+
        while True:
            status +=1
+
+           if status == 14 or status == 27 or status == 40:
+               element.send_keys(Keys.PAGE_UP)
+
+           if status == 10 or status == 32 or status == 48:
+               element.send_keys(Keys.SPACE)
+
            element.send_keys(Keys.PAGE_DOWN)
-           time.sleep(random.uniform(0.5, 1.2))
-           if status == 80:
+           # element.send_keys(Keys.SPACE)
+           time.sleep(random.uniform(2.0, 3.4))
+
+           if status == 50:
                break
 
        new_height = driver.execute_script("return document.body.scrollHeight")
@@ -209,7 +219,8 @@ def set_request_json_data(request):
                 temp.update(
                     {
                         "검색어": search_word,
-                        "총건수": json_data['data']['media_count']
+                        "총건수": json_data['data']['media_count'],
+                        "다음페이지": 1
                     }
                 )
         id_data.extend(temp_lst)
@@ -221,7 +232,8 @@ def set_request_json_data(request):
                 temp.update(
                     {
                         "검색어": search_word,
-                        "총건수": json_data['data']['media_count']
+                        "총건수": json_data['data']['media_count'],
+                        "다음페이지": "TOP"
                     }
                 )
         id_data.extend(temp_lst)
@@ -233,11 +245,16 @@ def set_request_json_data(request):
         for sections_data in json_data['sections']:
             temp_lst.extend(set_medais_data(sections_data))
             for temp in temp_lst:
+                try:
+                    next_page = json_data['next_page']
+                except:
+                    next_page = "last_page"
+
                 temp.update(
                     {
                         "검색어": search_word,
                         "총건수": "",
-                        "다음페이지": json_data['next_page'],
+                        "다음페이지": next_page
                     }
                 )
         id_data.extend(temp_lst)
@@ -342,7 +359,8 @@ if __name__ == '__main__':
     url_cnt = 0
     url_lst = []
 
-    url_lst.append("https://www.instagram.com/explore/tags/태그입력")
+
+
     driver = WD.browser_open('', 'https://www.instagram.com/', headress_mode=False, proxy_ip="", mobile_mode=False)
 
     # pickle.dump(driver.get_cookies(), open("cookies_mskpro1234.pkl", "wb"))
@@ -357,7 +375,7 @@ if __name__ == '__main__':
 
     time.sleep(1)
     elem_pw.clear()
-    elem_pw.send_keys("password")
+    elem_pw.send_keys("pw")
     time.sleep(2)
     WD.web_driver_wait(driver, '//*[@id="loginForm"]/div/div[3]/button/div').click()
 
