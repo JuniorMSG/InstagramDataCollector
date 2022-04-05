@@ -44,9 +44,9 @@ def set_scrolling(driver):
 
            element.send_keys(Keys.PAGE_DOWN)
            # element.send_keys(Keys.SPACE)
-           time.sleep(random.uniform(5.0, 9.4))
+           time.sleep(random.uniform(5.5, 9.5))
 
-           if status == 25:
+           if status == 40:
                break
 
        new_height = driver.execute_script("return document.body.scrollHeight")
@@ -263,7 +263,7 @@ def set_request_json_data(request):
 
     json_data_save = []
     try:
-        json_data_save.append(json_data_save)
+        json_data_save.append(json_data)
     except:
         print('json_Data_ADD ERROR')
 
@@ -296,7 +296,7 @@ def get_network_header(driver, url):
     try:
         file_path = '{0}'.format(url[url.find("tags/") + 5:])
         with open(file_path, 'w') as outfile:
-            json.dump(data, outfile)
+            json.dump(json_lst_Data, outfile)
     except:
         print("JSON_DUMB ERROR")
 
@@ -377,11 +377,8 @@ if __name__ == '__main__':
 
     url_cnt = 0
     url_lst = []
-
+    
     url_lst.append("https://www.instagram.com/explore/tags/태그입력")
-
-
-
     driver = WD.browser_open('', 'https://www.instagram.com/', headress_mode=False, proxy_ip="", mobile_mode=False)
 
     # pickle.dump(driver.get_cookies(), open("cookies_mskpro1234.pkl", "wb"))
