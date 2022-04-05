@@ -11,6 +11,7 @@ from seleniumwire.utils import decode
 from urllib import parse
 import multiprocessing
 from bs4 import BeautifulSoup
+import datetime as datetime
 
 def searchKeyword(driver, strkeyword):
     url = "https://www.instagram.com/explore/tags/{}/".format(strkeyword)
@@ -185,6 +186,16 @@ def set_medais_data(json_data):
         except:
             text = ""
 
+        try:
+            timeStamp = str(medias['media']['device_timestamp'])
+        except:
+            timeStamp = ""
+
+        try:
+            time = datetime.fromtimestamp(int(timeStamp[0:10])).isoformat()
+        except:
+            time = ""
+
         medias_lst.append({
             "이름": user_name,
             "전체이름": full_name,
@@ -194,6 +205,8 @@ def set_medais_data(json_data):
             "next_max_id": next_max_id,
             "like_count": like_count,
             "comment_count": comment_count,
+            "timeStamp":timeStamp,
+            "time":time,
             "url": ga_url
         })
 
@@ -377,8 +390,9 @@ if __name__ == '__main__':
 
     url_cnt = 0
     url_lst = []
-    
-    url_lst.append("https://www.instagram.com/explore/tags/태그입력")
+
+    url_lst.append("https://www.instagram.com/explore/tags/tagname")
+
     driver = WD.browser_open('', 'https://www.instagram.com/', headress_mode=False, proxy_ip="", mobile_mode=False)
 
     # pickle.dump(driver.get_cookies(), open("cookies_mskpro1234.pkl", "wb"))
@@ -389,7 +403,7 @@ if __name__ == '__main__':
     elem_id = WD.web_driver_wait(driver, '//*[@id="loginForm"]/div/div[1]/div/label/input')
     elem_pw = WD.web_driver_wait(driver, '//*[@id="loginForm"]/div/div[2]/div/label/input')
     elem_id.clear()
-    elem_id.send_keys("id")
+    elem_id.send_keys("msgpro1234@gmail.com")
 
     time.sleep(1)
     elem_pw.clear()
