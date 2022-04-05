@@ -44,9 +44,9 @@ def set_scrolling(driver):
 
            element.send_keys(Keys.PAGE_DOWN)
            # element.send_keys(Keys.SPACE)
-           time.sleep(random.uniform(2.0, 3.4))
+           time.sleep(random.uniform(5.0, 9.4))
 
-           if status == 50:
+           if status == 25:
                break
 
        new_height = driver.execute_script("return document.body.scrollHeight")
@@ -261,11 +261,18 @@ def set_request_json_data(request):
     except:
         print("NONE")
 
-    return id_data
+    json_data_save = []
+    try:
+        json_data_save.append(json_data_save)
+    except:
+        print('json_Data_ADD ERROR')
+
+    return id_data, json_data_save
 
 
 def get_network_header(driver, url):
     id_data = []
+    json_lst_Data = []
     data = 0
     for request in driver.requests:
         if request.response:
@@ -273,18 +280,30 @@ def get_network_header(driver, url):
             # https://www.instagram.com/explore/tags/%EC%84%9C%EC%9A%B8%EB%AC%B4%EC%9A%A9/?__a=1&__d=dis
             try:
                 if len(re.findall('https://www.instagram.com/explore/tags/[^ ]+/?__a=1&__d=dis', request.url)) == 1:
-                    id_data.extend(set_request_json_data(request))
+                    id_lst_data, json_data = set_request_json_data(request)
+                    id_data.extend(id_lst_data)
+                    json_lst_Data.extend(json_data)
                     print(data)
                 if len(re.findall('https://i.instagram.com/api/v1/tags/[^ ]+/sections', request.url)) == 1:
-                    id_data.extend(set_request_json_data(request))
+                    id_lst_data, json_data = set_request_json_data(request)
+                    id_data.extend(id_lst_data)
+                    json_lst_Data.extend(json_data)
                     print(data)
             except:
                 print("1234")
 
             data += 1
+    try:
+        file_path = '{0}'.format(url[url.find("tags/") + 5:])
+        with open(file_path, 'w') as outfile:
+            json.dump(data, outfile)
+    except:
+        print("JSON_DUMB ERROR")
 
     x = list({name_data['이름']: name_data for name_data in id_data}.values())
     df = pd.DataFrame(x)
+
+
     df.to_excel("{0} id.xlsx".format(url[url.find("tags/") + 5:]))
     df = pd.DataFrame(id_data)
     df.to_excel("{0} ga.xlsx".format(url[url.find("tags/") + 5:]))
@@ -358,6 +377,8 @@ if __name__ == '__main__':
 
     url_cnt = 0
     url_lst = []
+
+    url_lst.append("https://www.instagram.com/explore/tags/태그입력")
 
 
 
