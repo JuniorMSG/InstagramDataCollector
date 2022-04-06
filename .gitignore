@@ -12,6 +12,7 @@ excel/
 build/
 develop-eggs/
 dist/
+id_img/
 downloads/
 eggs/
 .eggs/
