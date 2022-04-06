@@ -231,6 +231,77 @@ def set_medais_data(json_data):
         except:
             time = ""
 
+        try:
+            user_pk = medias['media']['user']['pk']
+        except:
+            user_pk = ""
+
+        try:
+            media_id_pk = medias['media']['id']
+        except:
+            media_id_pk = ""
+
+        try:
+            media_pk = medias['media']['pk']
+        except:
+            media_pk = ""
+
+        try:
+            media_type = medias['media']['media_type']
+            if media_type == 1:
+                media_type_nm = "이미지"
+                image_cnt = 1
+                image_url = medias['media']['image_versions2']['candidates'][0]['url']
+                image_media_type = medias['media']['media_type']
+                image_height = medias['media']['original_height']
+                image_width = medias['media']['original_width']
+                video_duration = ""
+                video_play_cnt = ""
+                video_url =  ""
+
+            elif media_type == 2:
+                media_type_nm = "동영상"
+                image_cnt = 0
+                image_url = ""
+                image_media_type = ""
+                image_height = ""
+                image_width = ""
+                video_duration = medias['media']['video_duration']
+                video_play_cnt = medias['media']['view_count']
+                video_url = medias['media']['video_versions'][0]['url']
+
+            elif media_type == 8:
+                media_type_nm = "이미지 여러장"
+                image_cnt = medias['media']['carousel_media_count']
+                image_url = medias['media']['carousel_media'][0]['image_versions2']['candidates'][0]['url']
+                image_media_type = medias['media']['carousel_media'][0]['media_type']
+                image_height = medias['media']['carousel_media'][0]['original_height']
+                image_width = medias['media']['carousel_media'][0]['original_width']
+                video_duration = ""
+                video_play_cnt = ""
+                video_url = ""
+
+            else:
+                media_type_nm = ""
+                image_cnt = ""
+                image_url = ""
+                image_media_type = ""
+                image_height = ""
+                image_width = ""
+                video_duration = ""
+                video_play_cnt = ""
+                video_url =  ""
+        except:
+            media_type_nm = ""
+            image_cnt = ""
+            image_url = ""
+            image_media_type = ""
+            image_height = ""
+            image_width = ""
+            video_duration = ""
+            video_play_cnt = ""
+            video_url = ""
+
         medias_lst.append({
             "이름": user_name,
             "전체이름": full_name,
@@ -242,7 +313,20 @@ def set_medais_data(json_data):
             "comment_count": comment_count,
             "timeStamp":timeStamp,
             "time":time,
-            "url": ga_url
+            "url": ga_url,
+            "유저고유번호" : user_pk,
+            "미디어 아이디" : media_id_pk,
+            "미디어 PK" : media_pk,
+            "미디어 타입" : media_type,
+            "미디어 타입명": media_type_nm,
+            "이미지 개수" : image_cnt,
+            "이미지 URL" : image_url,
+            "이미지 타입" : image_media_type,
+            "가로사이즈" : image_width,
+            "세로사이즈" : image_height,
+            "비디오": video_duration,
+            "조회수": video_play_cnt,
+            "비디오 URL":video_url
         })
 
     return medias_lst
@@ -457,9 +541,7 @@ if __name__ == '__main__':
     url_cnt = 0
     url_lst = []
 
-
-    url_lst.append("https://www.instagram.com/explore/tags/태그명")
-
+    url_lst.append("https://www.instagram.com/explore/tags/부산모델")
 
 
 
@@ -469,7 +551,8 @@ if __name__ == '__main__':
     #     driver.add_cookie(cookie)
 
     mobile = True
-    id_pw_cnt = 0
+    id_pw_cnt = 1
+
     id_lst = []
     pw_lst = []
 
