@@ -70,6 +70,7 @@ def mobile_data_get_detail(driver, url):
         main_data = driver.execute_script("return window._sharedData")
         user_data = main_data['entry_data']["ProfilePage"][0]['graphql']['user']
 
+        biography = user_data['biography']
         edge_followed_by = user_data['edge_followed_by']['count']
         edge_follow = user_data['edge_follow']['count']
         edge_owner_to_timeline_media = user_data['edge_owner_to_timeline_media']['count']
@@ -111,6 +112,7 @@ def mobile_data_get_detail(driver, url):
         print("ERROR?")
 
     return  {
+            "biography":biography,
             "edge_followed_by": edge_followed_by, "edge_follow":edge_follow, "edge_owner_to_timeline_media":edge_owner_to_timeline_media,
             "edge_felix_video_timeline": edge_felix_video_timeline, "full_name":full_name, "id_pk":id_pk,
             "is_business_account": is_business_account, "is_professional_account":is_professional_account, "business_category_name":business_category_name,
@@ -166,6 +168,7 @@ if __name__ == '__main__':
     df_1 = pd.read_excel("id_data.xlsx", engine="openpyxl")
 
     id_data = pd.DataFrame(df_1, columns=['이름', 'URL', '전체이름', '검색어'
+        , 'biography'
         , 'edge_follow', 'edge_followed_by', 'edge_owner_to_timeline_media', 'edge_felix_video_timeline'
         , 'username', 'full_name', 'id_pk'
         , 'is_business_account', 'is_professional_account'
@@ -192,6 +195,7 @@ if __name__ == '__main__':
 
             index = id_data.index[id_data['이름'] == serach_id]
             for inx in index:
+                id_data['biography'][inx] = ret_data['biography']
                 id_data['edge_follow'][inx] = ret_data['edge_follow']
                 id_data['edge_followed_by'][inx] = ret_data['edge_followed_by']
                 id_data['edge_owner_to_timeline_media'][inx] = ret_data['edge_owner_to_timeline_media']
