@@ -535,8 +535,8 @@ if __name__ == '__main__':
     url_cnt = 0
     url_lst = []
 
-    url_lst.append("https://www.instagram.com/explore/tags/부산모델")
 
+    url_lst.append("https://www.instagram.com/explore/tags/태그명")
 
 
     # pickle.dump(driver.get_cookies(), open("cookies_mskpro1234.pkl", "wb"))
@@ -547,8 +547,8 @@ if __name__ == '__main__':
     mobile = True
     id_pw_cnt = 1
 
-    id_lst = []
-    pw_lst = []
+    id_lst = ['아이디명']
+    pw_lst = ['패스워드']
 
 
 
